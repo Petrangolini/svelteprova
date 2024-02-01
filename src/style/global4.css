@@ -1,0 +1,24 @@
+@font-face {
+    font-family: doom;
+    src: url(doomed.ttf);
+  }
+
+html{
+    width: 100%;
+    height: 100lvh;
+    background-color: rgb(0, 44, 2);
+    margin:0px;
+    padding:0px;
+    
+    background-image:  linear-gradient(#017701,#032703);
+    animation: none;
+    overflow: hidden;
+    
+}
+
+body{
+    margin:0px;
+    padding: 0px;
+    overflow: hidden;
+
+}

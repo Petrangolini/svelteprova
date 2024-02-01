@@ -1,0 +1,34 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Incontro{
+  id      Int      @id @default(autoincrement())
+  nome   String
+  image  String
+  hit      Int
+  dmg      Int
+  gld      Int
+  dungeon IncontroDungeon[]
+}
+
+model Dungeon{
+  id      Int      @id @default(autoincrement())
+  nome   String
+  incontri IncontroDungeon[]
+}
+
+model IncontroDungeon{
+  incontroId Int
+  incontro   Incontro  @relation(fields: [incontroId], references: [id])
+  dungeonId  Int
+  dungeon    Dungeon   @relation(fields: [dungeonId], references: [id])
+  @@id([incontroId, dungeonId])
+}
+
