@@ -17,8 +17,16 @@
     let dialog:HTMLDialogElement;
     let mute=false;
 
-    let audiofile:any;
-
+    let audiofile:{dice:HTMLAudioElement|null,hurt:HTMLAudioElement|null,coin:HTMLAudioElement|null,heart:HTMLAudioElement|null,monster:HTMLAudioElement|null,soundtruck:HTMLAudioElement|null,crush:HTMLAudioElement|null,rockslide:HTMLAudioElement|null}={            
+                dice:null,
+                hurt:null,
+                coin:null,
+                heart:null,
+                monster:null,
+                soundtruck:null,
+                rockslide:null,
+                crush:null
+            } 
     let monete=0
     let targetMonete=16
     let vita=12
@@ -288,22 +296,12 @@
 
     onMount(async()=>{
         
-        audiofile={
-                dice:new Audio('/audio/dice.wav'),
-                hurt:new Audio('/audio/hurt.wav'),
-                coin:new Audio('/audio/coin.wav'),
-                heart:new Audio('/audio/heartbeat.wav'),
-                monster:new Audio('/audio/monster.wav'),
-                soundtruck:new Audio('/audio/carmack.mp3'),
-                rockslide:new Audio('/audio/rockslide.wav'),
-                crush:new Audio('/audio/crush.wav')               
-            }
-            
 
 
     })
     onDestroy(()=>{
-        audiofile.soundtruck.pause();
+        
+            audiofile.soundtruck?.pause();
     })
 
     function selezione(en:any){ 
@@ -311,7 +309,7 @@
     }
     async function nextaction(){
 
-        if (audiofile.soundtruck.loop==false){
+        if (audiofile.soundtruck?.loop==false){
                 
             audiofile.soundtruck.loop=true; 
             audiofile.soundtruck.volume=0.03;  
@@ -336,7 +334,7 @@
         await new Promise(resolve => setTimeout(resolve, 1600));
 
         if (dice==6)  {
-            audiofile.rockslide.play();
+            audiofile.rockslide?.play();
             frana=true;
             await infliggiDanni(1);
         } 
@@ -353,7 +351,7 @@
     }
     async function infliggiDanni(v:number){
         
-        audiofile.hurt.play();
+        audiofile.hurt?.play();
         damage=true;
         vita=vita-v;  
         await new Promise(resolve => setTimeout(resolve, 600));
@@ -391,6 +389,15 @@
     </nav>
     
     <div class="body">
+        
+        <audio bind:this={audiofile.dice} src="/audio/dice.wav"></audio>
+        <audio bind:this={audiofile.hurt} src="/audio/hurt.wav"></audio>
+        <audio bind:this={audiofile.coin} src="/audio/coin.wav"></audio>
+        <audio bind:this={audiofile.heart} src="/audio/heartbeat.wav"></audio>
+        <audio bind:this={audiofile.monster} src="/audio/monster.wav"></audio>
+        <audio bind:this={audiofile.soundtruck} src="/audio/carmack.mp3"></audio>
+        <audio bind:this={audiofile.crush} src="/audio/crush.wav"></audio>
+        <audio bind:this={audiofile.rockslide} src="/audio/rockslide.wav"></audio>
 
     <div class="arena">
 
@@ -584,6 +591,9 @@
     --x:100%;
   }
 }
+    audio{
+        display:none;
+    }
 
     .back{
         background-color: yellow;

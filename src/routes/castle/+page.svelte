@@ -8,13 +8,34 @@
     import { fade,scale } from 'svelte/transition';
     import { quintOut } from 'svelte/easing';
 
+
+
     let damage=false;
     let destroy=false;
 
     let dialog:HTMLDialogElement;
     let mute=false;
 
-    let audiofile:any;
+    let audiofile:{dice:HTMLAudioElement|null,hurt:HTMLAudioElement|null,coin:HTMLAudioElement|null,heart:HTMLAudioElement|null,monster:HTMLAudioElement|null,soundtruck:HTMLAudioElement|null,crush:HTMLAudioElement|null}={            
+                dice:null,
+                hurt:null,
+                coin:null,
+                heart:null,
+                monster:null,
+                soundtruck:null,
+                crush:null
+            } 
+
+   /* let audiofile={
+                dice:new Audio('/audio/dice.wav'),
+                hurt:new Audio('/audio/hurt.wav'),
+                coin:new Audio('/audio/coin.wav'),
+                heart:new Audio('/audio/heartbeat.wav'),
+                monster:new Audio('/audio/monster.wav'),
+                soundtruck:new Audio('/audio/castle.ogg'),
+                crush:new Audio('/audio/crush.wav')
+            }  
+            */
     let danni=0;
 
     let monete=0
@@ -300,28 +321,15 @@
                 })
 }
 
-    onMount(()=>{
+    onMount(async ()=>{
         
-        audiofile={
-                dice:new Audio('/audio/dice.wav'),
-                hurt:new Audio('/audio/hurt.wav'),
-                coin:new Audio('/audio/coin.wav'),
-                heart:new Audio('/audio/heartbeat.wav'),
-                monster:new Audio('/audio/monster.wav'),
-                soundtruck:new Audio('/audio/castle.ogg'),
-                crush:new Audio('/audio/crush.wav')
-            }
-            
-            return () => {
-            audiofile.soundtruck.pause();
-		}
-
-            
+        
 
     })
     
     onDestroy(()=>{
-        audiofile.soundtruck.pause();
+        if (audiofile.soundtruck)
+            audiofile.soundtruck.pause();
     })
 
     function selezione(en:any){ 
@@ -407,6 +415,15 @@
 </div>
 
 <div class="newhtml">
+
+    <audio bind:this={audiofile.dice} src="/audio/dice.wav"></audio>
+    <audio bind:this={audiofile.hurt} src="/audio/hurt.wav"></audio>
+    <audio bind:this={audiofile.coin} src="/audio/coin.wav"></audio>
+    <audio bind:this={audiofile.heart} src="/audio/heartbeat.wav"></audio>
+    <audio bind:this={audiofile.monster} src="/audio/ghost_sound.wav"></audio>
+    <audio bind:this={audiofile.soundtruck} src="/audio/castle.ogg"></audio>
+    <audio bind:this={audiofile.crush} src="/audio/crush.wav"></audio>
+    
 <div class="area"> 
     <nav>
         <div class="titolo">BLACK CASTLE</div>
@@ -595,6 +612,9 @@
 
 
 <style>
+    audio{
+        display: none;
+    }
     .back{
         background-color: yellow;
         font-family: doom;

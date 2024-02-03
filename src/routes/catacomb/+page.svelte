@@ -12,7 +12,15 @@
     let damage=false;
     let destroy=false;
 
-    let audiofile:any;
+    let audiofile:{dice:HTMLAudioElement|null,hurt:HTMLAudioElement|null,coin:HTMLAudioElement|null,heart:HTMLAudioElement|null,monster:HTMLAudioElement|null,soundtruck:HTMLAudioElement|null,crush:HTMLAudioElement|null}={            
+                dice:null,
+                hurt:null,
+                coin:null,
+                heart:null,
+                monster:null,
+                soundtruck:null,
+                crush:null
+            } 
 
     let dialog:HTMLDialogElement;
     let mute=false;
@@ -327,23 +335,19 @@
 
     onMount(()=>{
         
-        audiofile={
-                dice:new Audio('/audio/dice.wav'),
-                hurt:new Audio('/audio/hurt.wav'),
-                coin:new Audio('/audio/coin.wav'),
-                heart:new Audio('/audio/heartbeat.wav'),
-                monster:new Audio('/audio/ghost_sound.wav'),
-                soundtruck:new Audio('/audio/a_cold_wind.wav'),
-                crush:new Audio('/audio/crush.wav') 
-            }
+        
             resiza();
             
             window.addEventListener('resize', resiza);
+
+            return()=>window.removeEventListener('resize', resiza);
+
 		 
     });
     onDestroy(()=>{
-        audiofile.soundtruck.pause();
-		window.removeEventListener('resize', resiza);
+        if (audiofile.soundtruck)
+            audiofile.soundtruck.pause();
+
     })
     
     function copiaTorce(t:any){
@@ -435,6 +439,14 @@
 
 
 <div class="newhtml">
+    <audio bind:this={audiofile.dice} src="/audio/dice.wav"></audio>
+    <audio bind:this={audiofile.hurt} src="/audio/hurt.wav"></audio>
+    <audio bind:this={audiofile.coin} src="/audio/coin.wav"></audio>
+    <audio bind:this={audiofile.heart} src="/audio/heartbeat.wav"></audio>
+    <audio bind:this={audiofile.monster} src="/audio/ghost_sound.wav"></audio>
+    <audio bind:this={audiofile.soundtruck} src="/audio/castle.ogg"></audio>
+    <audio bind:this={audiofile.crush} src="/audio/crush.wav"></audio>
+    
 <div class="area"> 
     
     <button class="audio" on:click={muta}>
@@ -636,6 +648,9 @@
 
 
 <style>
+    audio{
+        display:none;
+    }
     .back{
         background-color: yellow;
         font-family: doom;
